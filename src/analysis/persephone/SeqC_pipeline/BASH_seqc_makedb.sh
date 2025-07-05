@@ -3,7 +3,8 @@
 # Title: make pipeline DBs
 # Program by: Wiley Barton - 2022.02.07
 # Modified for conda/docker pipeline - 2024.02.22
-# last update - 2025.05.05
+# Version for: PERSEPHONE
+# last update - 2025.07.01
 # Modified code sources:
 #   check volume size: https://stackoverflow.com/questions/8110530/check-free-disk-space-for-current-partition-in-bash
 #   semi-array in env var: https://unix.stackexchange.com/questions/393091/unable-to-use-an-array-as-environment-variable
@@ -46,8 +47,8 @@ v_vol_gm=1000
 v_vol_used=0
 # Arrays of core DBs, standard dir and retrieval command
 if [[ -z "${v_dir_db}" ]]; then
-#set as default
-  v_dir_db='/DB'
+    #set as default
+    v_dir_db='/DB'
 fi
 vn=0
 varr_db_name[$vn]=''
@@ -77,12 +78,6 @@ vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed
 vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
 # test and set accordingly
 [[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
-# OoD ifelse approach
-#if [[ "$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1)" -gt "${varr_db_size[$vn]}" ]];then 
-#varr_db_check[$vn]=1
-#else
-#varr_db_check[$vn]=0
-#fi
 # host - ncbi-bt2 - btau - 3.7G ~ 30min w/ 6 threads
 ((vn++))
 varr_db_name[$vn]='host_kd_btau'
@@ -122,10 +117,8 @@ vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
 ((vn++))
 varr_db_name[$vn]='tool_ncbi_taxd'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/ncbi_NR'
-#varr_db_gets[3]='micromamba run -n env_s1 kneaddata_database --download mouse_C57BL bowtie2 '${varr_db_path[3]}'/C57BL.tar.gz'
 varr_db_gets[$vn]='wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O '${varr_db_path[$vn]}'/taxdump.tar.gz'
-varr_db_pack[$vn]=${varr_db_pack[0]}${varr_db_path[$vn]}'/taxdump.tar.gz --directory '${varr_db_path[$vn]}
-#mkdir taxonomy && tar -xxvf taxdump.tar.gz -C taxonomy && mv ./taxonomy/ /DB/DEPO_demo/REPO_tool/ncbi_NR
+varr_db_pack[$vn]='mkdir -p '${varr_db_path[$vn]}'/taxonomy && '${varr_db_pack[0]}${varr_db_path[$vn]}'/taxdump.tar.gz --directory '${varr_db_path[$vn]}'/taxonomy'
 varr_db_size[$vn]=0.5
 vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
 vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
@@ -227,8 +220,7 @@ if [[ -z "${ven_db_pack}" ]]; then
     echo "VEN_DB_PACK="\"$ven_db_pack\" >> /etc/environment
 fi
 source /etc/environment
-}
-#EoF
+} #EoF
 func_check () {
 # check if databases are present where they should be
 # run checksum to confirm
@@ -313,15 +305,7 @@ else
         fi
     fi
 fi
-}
-#EoF
-#vin_file_in='/DB/REPO_tool/kraken/t2p/taxa2proc_apollo.txt'
-#vin_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_apollo_out.txt'
-#vin_DBNAME='/DB/REPO_tool/kraken/kdb_apollo'
-#vin_dir_k2_genm='/DB/REPO_tool/kraken/genomes/apollo'
-#vin_KMER=35
-#vin_READ=150
-#func_makedb_krak ${v_file_in} ${v_file_out} ${vDBNAME} ${v_dir_k2_genm} ${vKMER} ${vREAD}
+} #EoF
 func_makedb_krak () {
     #Generate kraken/bracken DBs
     #Req input of
@@ -683,8 +667,7 @@ func_makedb_krak () {
     # TODO remove contents of genome dir ... needs consideration of other usage of contents
     # compress
     pigz "${v_kdmp}"*accession2taxid
-}
-#EoF
+} #EoF
 func_makedb () {
 # pull missing databases and align them with the pipeline v_mkdb=1 compile du of all dbs
 #host_kd_hsapcontam host_kd_btau host_kd_mmus tool_cm2_dmnd
@@ -1052,8 +1035,7 @@ else
     exit 1
 fi
 echo "FUNC_MAKE: EoF"
-}
-#EoF
+} #EoF
 #check input
 OPTSTRING=":hfba:d:cs:"
 while getopts ${OPTSTRING} opt; do
