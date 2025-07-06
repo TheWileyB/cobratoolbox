@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.27
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.06.23
+# last update - 2025.07.06
 # Modified code sources:
 #   https://stackoverflow.com/questions/2043453/executing-multi-line-statements-in-the-one-line-command-line
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -1395,7 +1395,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 			# secret option to envoke splash page
 			func_splash
 			source /etc/environment
-			source /root/.bashrc
+			source /home/${MAMBA_USER}/.bashrc
 			exit 1
 			;;
 		:)
@@ -1409,7 +1409,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 			;;
 		esac
 	done
-  	shift $((OPTIND -1))
+	shift $((OPTIND -1))
 	# check and switch error output to dbug log
 	(( ${vopt_dbug} )) && v_dir_err=${v_logfile_dbug} || v_dir_err='/dev/null'
 	#generate step array if unspecified and branch provided
@@ -2481,13 +2481,13 @@ if [[ ${v_scrp_check} -eq 0 ]];then
 	#startup splash - ascii gen from: https://patorjk.com/software/taag, standard,slant,alpha,isometric1,impossible
 	#https://medium.com/@Frozenashes/making-a-custom-startup-message-for-a-linux-shell-using-bashrc-and-bash-scripting-280268fdaa17
 	func_splash() {
-  	#if null create
+	#if null create
 		if [[ -z "${VEN_SPLASH}" ]]; then
 			echo "VEN_SPLASH="\"1\" >> /etc/environment
-			echo "export VEN_SPLASH=1" >>  /root/.bashrc
-			echo "BASH_seqc_mama.sh -2" >> /root/.bashrc
+			echo "export VEN_SPLASH=1" >>  /home/${MAMBA_USER}/.bashrc
+			echo "BASH_seqc_mama.sh -2" >> /home/${MAMBA_USER}/.bashrc
 			source /etc/environment
-			source /root/.bashrc
+			source /home/${MAMBA_USER}/.bashrc
 			export VEN_SPLASH=1
 			declare -x VEN_SPLASH=1
 			exit 1
@@ -2507,10 +2507,10 @@ if [[ ${v_scrp_check} -eq 0 ]];then
    / _ \ / __/ __|/ _ | '_ ` _ \| '_ \| | | | |  __ \__ \ / _ \| | | | '__/ __/ _ \/ _` | | |_  | | | | \ \/ /
   / ___ \\__ \__ |  __| | | | | | |_) | | |_| | |__| __) | (_) | |_| | | | (_|  __| (_| | |  _| | | |_| |>  <
  /_/   \_|___|___/\___|_| |_| |_|_.__/|_|\__, |     |___/ \___/ \__,_|_|  \___\___|\__,_| |_|   |_|\__,_/_/\_\
-         _______              _______     |___/    _______              _______
+		 _______              _______     |___/    _______              _______
         /::\    \            /::\    \            /::\    \            /::\    \
-       /::::\    \          /::::\    \          /::::\    \          /::::\    \
-      /::::::\    \        /::::::\    \        /::::::\    \        /::::::\    \
+	   /::::\    \          /::::\    \          /::::\    \          /::::\    \
+	  /::::::\    \        /::::::\    \        /::::::\    \        /::::::\    \
      /:::/\:::\    \      /:::/\:::\    \      /::::::::\    \      /:::/\:::\    \
     /:::/__\:::\    \    /:::/__\:::\    \    /:::/~~\:::\    \    /:::/  \:::\    \
     \:::\   \:::\    \  /::::\   \:::\    \  /:::/    \:::\    \  /:::/    \:::\    \
