@@ -182,6 +182,7 @@ if procKeepSeqC
     comm_mama_full = [comm_mama_full ' -k'];
 end
 comm_mama_full = sprintf('%s -i "step0_data_in/" -n "%s" -r "SR" -s 0', comm_mama_full, fileIDSeqC);
+%comm_mama_full = sprintf('%s -i "step0_data_in/" -n "%s" -r "SR" -s 0 -d "tool_k2_std8"', comm_mama_full, fileIDSeqC);%smol test
 % Append volume mapping commands to core
 % OS sensitive
 % Block with apptainer+
