@@ -6,7 +6,7 @@
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for Persephone
-# last update - 2025.07.06
+# last update - 2025.07.07
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -240,14 +240,12 @@ RUN [ "/bin/bash", "-c", "find /usr/bin -name BASH_seqc_*.sh -exec dos2unix {} +
 RUN printf '%s\nStart of pipeline log -- Docker Initialized@: %s\n%s\n' "${v_logblock0}" "$(date)" "${v_logblock0}" > /tmp/${venv_log_init}
 RUN chown -R ${USER_UID}:${USER_GID} /tmp/${venv_log_init}
 #--------------------------------------------------------------------------------------------------#
-# Set up user and shell
+# Set up splash, user, and shell
 #--------------------------------------------------------------------------------------------------#
+RUN printf '%s\n%s' "export VEN_SPLASH=1" "BASH_seqc_mama.sh -2" >> /root/.bashrc
 USER ${MAMBA_USER}
+RUN printf '%s\n%s' "export VEN_SPLASH=1" "BASH_seqc_mama.sh -2" >> /home/${MAMBA_USER}/.bashrc
 SHELL [ "/usr/local/bin/_dockerfile_shell.sh" ]
 ENTRYPOINT [ "/usr/local/bin/_entrypoint.sh" ]
 CMD [ "/bin/bash"]
-#--------------------------------------------------------------------------------------------------#
-# Setup splash
-#--------------------------------------------------------------------------------------------------#
-RUN printf '%s\n%s' "export VEN_SPLASH=1" "BASH_seqc_mama.sh -2" >> /home/${MAMBA_USER}/.bashrc
 #EoB

@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.27
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.07.06
+# last update - 2025.07.07
 # Modified code sources:
 #   https://stackoverflow.com/questions/2043453/executing-multi-line-statements-in-the-one-line-command-line
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -77,6 +77,8 @@ v_version='1.0.1'
 declare VEN_SPLASH
 # user input of script
 v_com_log="$@"
+# set user bashrc
+[[ $(whoami) = 'root' ]] && v_dir_rc='/root' || v_dir_rc='/home/'${MAMBA_USER}
 #----------------------------------------------------------------------------------------
 # Directory check/config - ROUGH
 #----------------------------------------------------------------------------------------
@@ -1395,7 +1397,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 			# secret option to envoke splash page
 			func_splash
 			source /etc/environment
-			source /home/${MAMBA_USER}/.bashrc
+			source ${v_dir_rc}/.bashrc
 			exit 1
 			;;
 		:)
@@ -2484,10 +2486,10 @@ if [[ ${v_scrp_check} -eq 0 ]];then
 	#if null create
 		if [[ -z "${VEN_SPLASH}" ]]; then
 			echo "VEN_SPLASH="\"1\" >> /etc/environment
-			echo "export VEN_SPLASH=1" >>  /home/${MAMBA_USER}/.bashrc
-			echo "BASH_seqc_mama.sh -2" >> /home/${MAMBA_USER}/.bashrc
+			echo "export VEN_SPLASH=1" >>  ${v_dir_rc}/.bashrc
+			echo "BASH_seqc_mama.sh -2" >> ${v_dir_rc}/.bashrc
 			source /etc/environment
-			source /home/${MAMBA_USER}/.bashrc
+			source ${v_dir_rc}/.bashrc
 			export VEN_SPLASH=1
 			declare -x VEN_SPLASH=1
 			exit 1
