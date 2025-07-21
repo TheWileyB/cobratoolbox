@@ -1,5 +1,5 @@
 How to do stuff... seqc stuff 🙀
-# Commands to facilitate running the server component of the protocol (_Seqc As Flux_ pipeline)
+# Commands to facilitate running the _Seqc As Flux_ pipeline - last update 2025.07.01
 ## Project Overview
 This document contains the code and instructions for running the _SeqC_ pipeline for genetic sequencing data processing. _SeqC_ is designed to streamline the analysis of sequencing data for use as input to microbial flux models.
 ## Pipeline Components
@@ -55,7 +55,6 @@ The _SeqC_ pipeline coordinates the following bioinformatics tools to generate i
 ## Installation
 
 ### Git
-
 ```bash
 sudo apt install git
 ```
@@ -113,16 +112,16 @@ sudo snap install docker
 #### Build Docker image
 Set cpu and mem variables high to run fast. Adjust according to system being used.
 ```bash
-docker build -t dock_seqc --ulimit nofile=65536:65536 --build-arg varg_cpu_max=48 --build-arg varg_mem_max=200 .
+docker build -t dock_seqc --ulimit nofile=65536:65536 --build-arg varg_cpu_max=48 --build-arg varg_mem_max=200 --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) .
 ```
 #### Run Docker container
 Intended to be run without alteration.
 ```bash
-docker run --interactive --tty --user 0 --rm --memory=16g --cpus=4 --mount "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash
+docker run --interactive --tty --user $(id -u):$(id -g) --rm --memory=200g --cpus=48 --mount "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash
 ```
 Windows version
 ```bash
-docker run --interactive --tty --user 0 --rm --memory=16g --cpus=4 --mount "type=bind,src=$($pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$($pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=$($pwd)/seqc_proc,target=/DB" dock_seqc /bin/bash
+docker run --interactive --tty --user "$(id -u):$(id -g)" --rm --memory=16g --cpus=4 --mount "type=bind,src=$($pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$($pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=$($pwd)/seqc_proc,target=/DB" dock_seqc /bin/bash
 ```
 ## Inside _SeqC_ image
 #### Create sample id file for test batch
@@ -148,12 +147,22 @@ Initialise MATLAB
 ```
 Build docker image from MATLAB
 ```bash
-comm_build = 'docker build -t dock_seqc --ulimit nofile=65536:65536 --build-arg varg_cpu_max=4 --build-arg varg_mem_max=20 .'
+comm_build = 'docker build -t dock_seqc --ulimit nofile=65536:65536 --build-arg varg_cpu_max=4 --build-arg varg_mem_max=20 --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) .'
 [status,cmdout] = system(comm_build)
 ```
 Docker core run command
 ```bash
-comm_run_main = 'docker run --interactive --tty --user 0 --rm --memory=16g --cpus=4 --mount type=bind,src=$(pwd)/seqc_input/,target=/home/seqc_user/seqc_project/step0_data_in --mount type=bind,src=$(pwd)/seqc_output/,target=/home/seqc_user/seqc_project/final_reports --mount type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc dock_seqc /bin/bash'
+[~, v_uid] = system('id -u');
+[~, v_gid] = system('id -g');
+v_uid = strtrim(v_uid);
+v_gid = strtrim(v_gid);
+maxCpuSeqC = num2str(48);
+maxMemSeqC = num2str(200);
+comm_run_core = sprintf('docker run --tty --user %s:%s --rm --memory=%s --cpus=%s',v_uid,v_gid,sprintf('%sg',maxMemSeqC),maxCpuSeqC);
+comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
+comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
+comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
+comm_run_main = sprintf('%s %s %s %s docker_seqc /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
 ```
 Apptainer accommodation (tested on Apptainer version 1.3.4)
 ```bash
@@ -162,7 +171,11 @@ comm_build = 'apptainer build apter_seqc.sif docker-daemon://dock_seqc:latest'
 [status,cmdout] = system(comm_build)
 #test - sudo
 # TMP interactive: sudo apptainer run --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp -e --cpus 4 --memory 20G --no-home --mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in --mount type=bind,src=$(pwd)/seqc_output/,dst=/home/seqc_user/seqc_project/final_reports --mount type=bind,src=$(pwd)/seqc_proc,dst=/DB aptr_seqc.sif /bin/bash
-comm_run_main = 'apptainer exec --cpus 4 --memory 20G --no-home --mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in --mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports --mount type=bind,src=$(pwd)/seqc_proc,dst=/DB apter_seqc.sif /bin/bash'
+comm_run_core = 'apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e';
+comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
+comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
+comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
+comm_run_main = sprintf('%s %s %s %s apter_seqc.sif /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
 ```
 #### Test core bash script
 ```bash
@@ -284,6 +297,7 @@ cmdout =
      fb ratio could not be calculated
      FUNC_general: MARS complete :D'
 
+
 ```
 ## Outputs
 After running the SeqC pipeline, the following output files will be generated (actual names are TBD):
@@ -347,11 +361,34 @@ time micromamba run -n env_s1_kneaddata kneaddata --input1 step0_data_in/SRR1906
 # mounting - https://apptainer.org/docs/user/main/bind_paths_and_mounts.html
 # conversion - https://apptainer.org/user-docs/3.8/singularity_and_docker.html
 #install - sudo add-apt-repository -y ppa:apptainer/ppa - sudo apt install -y apptainer
+# permissions issue:
+# sudo emacs /etc/apparmor.d/apptainer
+#^^^^
+# Permit unprivileged user namespace creation for apptainer starter
+#abi <abi/4.0>,
+#include <tunables/global>
+#profile apptainer /usr/libexec/apptainer/bin/starter{,-suid} 
+#    flags=(unconfined) {
+#  userns,
+#  # Site-specific additions and overrides. See local/README for details.
+#  include if exists <local/apptainer>
+#}
+#sudo systemctl reload apparmor
+#sudo systemctl daemon-reload
+#
+INFO:    Terminating fuse-overlayfs after timeout
+INFO:    Timeouts can be caused by a running background process
+FATAL:   container creation failed: while applying cgroups config: while creating cgroup manager: failed to connect to dbus (hint: for rootless containers, maybe you need to install dbus-user-session package, see https://github.com/opencontainers/runc/blob/master/docs/cgroup-v2.md): could not execute `busctl --user --no-pager status` (output: "Failed to connect to bus: Connection refused\n"): exit status 1
+#
 #save docker image - docker save dock_seqc:latest -o dock_seqc.tar
 #build - XXnamespace privilages - sudo singularity build apto_seqc.sif dock_seqc.tar - alt: singularity build lolcow_tar.sif docker-archive://lolcow.tar
 #build - directly from local image - req sudo if user is not member of docker group - singularity build singo_seqc.sif docker-daemon://dock_seqc:latest
 #test - sudo apptainer exec --mount type=bind,src=$(pwd)/apptainer_test/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in singo_seqc.sif /bin/bash BASH_seqc_mama.sh -h
 # success with apptainer version 1.3.4
+#Wipeout docker container
+docker system prune --all --volumes
+#Alteration of run command following issue on OSX (2025.04.23)
+docker run --interactive --tty --user $(id -u):$(id -g) --rm --memory=200g --cpus=48 --mount "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=$(pwd)/seqc_proc,target=/DB" dock_seqc /bin/bash
 ```
 ## _nota bene_
 This _README_ file was compiled with assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/) 

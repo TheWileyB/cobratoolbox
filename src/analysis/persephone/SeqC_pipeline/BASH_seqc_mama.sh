@@ -166,12 +166,10 @@ func_log () {
 	fi
 	# Build debug log file on vopt_dbug=1
 	if [[ $1 -eq 2 ]] || [[ $1 -eq 0 ]];then
-	#
 		local line_info call_line
         line_info=$(caller 0)
         call_line=${line_info%% *}
         #printf '%s:FS:%s_DEBUG(LINE%s):FS:%s\n' "$2" "$3" "$call_line" "$4" >> "$v_logfile_dbug"
-	#
 		# type/entry/value
     	((vopt_dbug)) && printf '%s:FS:%s_DEBUG(LINE%s):FS:%s\n' "$2" "$3" "$call_line" "$4" >> "$v_logfile_dbug"
 		#func_log "2" "MESSAGE" "FUNC_MAMA" "Something wild to say"
@@ -373,12 +371,12 @@ func_mama2 () {
         esac
     done
     # Required check
-#    if [[ -z "${vloc_com[*]}" || -z "$vloc_env" || -z "$vloc_pac" || -z "$JOB_SCRIPT_NAME" || -z "$vloc_name" ]]; then
- #       echo "Usage: func_mama -s <statements> -e <mamba_env> -p <package> -j <job_script> -f <file_with_samples> \
-#		-S <step> -I <input_dir> -C <input_command_dir> -O <output_dir> -D <output_command_dir> -c <commands> \
-#		-H <head> -T <tail> -N <name_file> -u <script_path> -b <debug> -m <mkdir>"
- #       return 1
-  #  fi
+    #if [[ -z "${vloc_com[*]}" || -z "$vloc_env" || -z "$vloc_pac" || -z "$JOB_SCRIPT_NAME" || -z "$vloc_name" ]]; then
+    #    echo "Usage: func_mama -s <statements> -e <mamba_env> -p <package> -j <job_script> -f <file_with_samples> \
+	#	-S <step> -I <input_dir> -C <input_command_dir> -O <output_dir> -D <output_command_dir> -c <commands> \
+	#	-H <head> -T <tail> -N <name_file> -u <script_path> -b <debug> -m <mkdir>"
+    #	return 1
+    #fi
     local vloc_string="${vloc_head}${vloc_tail}"
 	# Set up working directories and file paths
     DIR_JOB="$(pwd)/scrp_job"
@@ -389,7 +387,6 @@ func_mama2 () {
 
     # Join statements into a single string for awk
 	local COMBINED_CMD="${vloc_com[*]}"
-#	ESCAPED_CMD=$(echo "$COMBINED_CMD" | sed 's/"/\\"/g')
 	local ESCAPED_CMD=$(func_awk_esc "${COMBINED_CMD}")
     #ESCAPED_CMD=$(printf "%s\n" "${vloc_com[@]}" | sed ':a;N;$!ba;s/\n/\\n/g')
 	# Check for input
@@ -1349,7 +1346,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 			# if 0 then convert to array with all steps according to branch
 				vopt_part=0
 				if [[ ${vopt_branch} = 'SR' ]];then
-					vopt_step=( {1..3} )
+					vopt_step=( {1..2} ) #MARS disable > 1..2 from 1..3
 				fi
 				if [[ ${vopt_branch} = 'ALL' ]];then
 					vopt_step=( $( eval echo {1..6} ) )
@@ -1418,7 +1415,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 	if (( ${vopt_log} ));then
 		if [[ -z ${vopt_step} ]];then
 			if [[ ${vopt_branch} = 'SR' ]];then
-				vopt_step=( {1..3} )
+				vopt_step=( {1..2} ) #MARS disable > 1..2 from 1..3
 			fi
 			if [[ ${vopt_branch} = 'ALL' ]];then
 				vopt_step=( $( eval echo {1..6} ) )
@@ -1434,7 +1431,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 		# complete list per branch
 			vopt_pac[0]=''
 			if [[ ${vopt_branch} = 'SR' ]];then
-				vref_pac=( '' 'kneaddata' 'kraken' 'mars' )
+				vref_pac=( '' 'kneaddata' 'kraken' ) #MARS disable > vref_pac=( '' 'kneaddata' 'kraken' ) from vref_pac=( '' 'kneaddata' 'kraken' 'mars' )
 				vref_pac1='kneaddata'
 				vref_pac2='kraken'
 				vref_pac3='mars'
@@ -1812,7 +1809,7 @@ if (( ${vopt_log} ));then
 	# valid pot tools not selected will be absent rather than =0, pot issue?
 	v_pac_s1='kneaddata'
 	v_pac_s2=( 'kraken' 'spades' )
-	v_pac_s3=( 'mars' 'minimap2' 'strobealign' 'vamb' 'checkm2' )
+	v_pac_s3=( 'mars' )
 	for istep in "${vopt_step[@]}";do
 		if [[ ${istep} -eq 1 ]];then
 			vstat_step=$( func_status_adj "get" "${v_logfile_status}" "STATE" "step"${istep} )
@@ -2431,14 +2428,9 @@ if (( ${vopt_log} ));then
 		v_print_type='FAILURE XO'	
 	fi
 	printf '%s\n%s\n\tStatus: %s\nEnd time: %s\n%s\n' "${v_logblock0}" "${v_print_head}" "${v_print_type}" "${v_TS}" "${v_logblock0}" >> ${v_logfile}
-	#STATE:FS:run_status:FS:PENDING
 	if (( $vstat_done ));then
 		# successful exiting
 		# Relocate input taxonomy for mars to final out
-		# PERSEPHONE FIX - REDUND
-#		if [[ ! -z ${v_mars_kin} ]];then
-#			mv ${v_mars_kin} /home/seqc_user/seqc_project/final_reports/
-#		fi
 		# exit keep-clean
 		if (( ${vopt_keep} ));then
 			printf 'All files retained\n' >> ${v_logfile}
@@ -2473,8 +2465,7 @@ if (( ${vopt_log} ));then
 		v_drop_catch='KB_S_mpa_out_{RC,RA}.txt'
 		eval "mv ${vout_s2}/${v_drop_catch} /home/seqc_user/seqc_project/final_reports/" 2> /dev/null
 		# TODO more elaborate permissions transfer approach
-		# pot. grab user ID at start and set ownership directly
-		chmod -R +777 /home/seqc_user/seqc_project/final_reports/*
+		# OoD: chmod -R +777 /home/seqc_user/seqc_project/final_reports/*
 	fi
 	printf 'SeqC Stuff ENDS @: %s\n' "$(date +"%Y.%m.%d %H.%M.%S (%Z)")"
 fi #END of exit log and check
@@ -2509,10 +2500,10 @@ if [[ ${v_scrp_check} -eq 0 ]];then
    / _ \ / __/ __|/ _ | '_ ` _ \| '_ \| | | | |  __ \__ \ / _ \| | | | '__/ __/ _ \/ _` | | |_  | | | | \ \/ /
   / ___ \\__ \__ |  __| | | | | | |_) | | |_| | |__| __) | (_) | |_| | | | (_|  __| (_| | |  _| | | |_| |>  <
  /_/   \_|___|___/\___|_| |_| |_|_.__/|_|\__, |     |___/ \___/ \__,_|_|  \___\___|\__,_| |_|   |_|\__,_/_/\_\
-		 _______              _______     |___/    _______              _______
+         _______              _______     |___/    _______              _______
         /::\    \            /::\    \            /::\    \            /::\    \
-	   /::::\    \          /::::\    \          /::::\    \          /::::\    \
-	  /::::::\    \        /::::::\    \        /::::::\    \        /::::::\    \
+       /::::\    \          /::::\    \          /::::\    \          /::::\    \
+      /::::::\    \        /::::::\    \        /::::::\    \        /::::::\    \
      /:::/\:::\    \      /:::/\:::\    \      /::::::::\    \      /:::/\:::\    \
     /:::/__\:::\    \    /:::/__\:::\    \    /:::/~~\:::\    \    /:::/  \:::\    \
     \:::\   \:::\    \  /::::\   \:::\    \  /:::/    \:::\    \  /:::/    \:::\    \

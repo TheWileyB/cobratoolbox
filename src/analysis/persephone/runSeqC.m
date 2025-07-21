@@ -144,31 +144,31 @@ if vAPTER == 0
 % cgroups error with resource flags - bypassed by ommision atm
 %    comm_run_core = sprintf('apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e --cpus %s --memory %s',maxCpuSeqC,sprintf('%sG',maxMemSeqC));
     comm_run_core = 'apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e';
-    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
-    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
-    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
+    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in';
+    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports';
+    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB';
     comm_run_main = sprintf('%s %s %s %s apter_seqc.sif /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
 elseif strcmp(vOS, 'unix')
     % core run command
     comm_run_core = sprintf('docker run --tty --user %s:%s --rm --memory=%s --cpus=%s',v_uid,v_gid,sprintf('%sg',maxMemSeqC),maxCpuSeqC);
     % Append volume mapping commands to core
-    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
-    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
-    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
+    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in';
+    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports';
+    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB';
     comm_run_main = sprintf('%s %s %s %s dock_seqc /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
 elseif strcmp(vOS, 'mac')
     % currently unable to simulate user permission transfer
     comm_run_core = sprintf('docker run --tty --user 0 --rm --memory=%s --cpus=%s',sprintf('%sg',maxMemSeqC),maxCpuSeqC);
-    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
-    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
-    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
+    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in';
+    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports';
+    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB';
     comm_run_main = sprintf('%s %s %s %s dock_seqc /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
     system("chmod -R a+rw ./seqc_input ./seqc_output ./seqc_proc"); % allow interaction from host:dock
 elseif strcmp(vOS, 'win')
     comm_run_core = sprintf('docker run --tty --user %s:%s --rm --memory=%s --cpus=%s',v_uid,v_gid,sprintf('%sg',maxMemSeqC),maxCpuSeqC);
-    comm_run_dir_I = sprintf('--mount "type=bind,src=%s\\seqc_input,target=/home/seqc_user/seqc_project/step0_data_in"', pwd)
-    comm_run_dir_O = sprintf('--mount "type=bind,src=%s\\seqc_output,target=/home/seqc_user/seqc_project/final_reports"', pwd)
-    comm_run_dir_P = sprintf('--mount "type=bind,src=%s\\seqc_proc,target=/DB"', pwd)
+    comm_run_dir_I = sprintf('--mount "type=bind,src=%s\\seqc_input,target=/home/seqc_user/seqc_project/step0_data_in"', pwd);
+    comm_run_dir_O = sprintf('--mount "type=bind,src=%s\\seqc_output,target=/home/seqc_user/seqc_project/final_reports"', pwd);
+    comm_run_dir_P = sprintf('--mount "type=bind,src=%s\\seqc_proc,target=/DB"', pwd);
     comm_run_main = sprintf('%s %s %s %s dock_seqc /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
 end
 
