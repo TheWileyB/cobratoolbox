@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.07
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.07.01
+# last update - 2025.08.01
 # Modified code sources:
 #   check volume size: https://stackoverflow.com/questions/8110530/check-free-disk-space-for-current-partition-in-bash
 #   semi-array in env var: https://unix.stackexchange.com/questions/393091/unable-to-use-an-array-as-environment-variable
@@ -14,7 +14,7 @@
 #           docker build -t dock_seqc --ulimit nofile=65536:65536 .
 #       2)run with vol mapping: docker run -it -u 0 -v C:\Users\0131549S\local\path\SeqC_stuff\seqc_db:/DB seqc_test_bnm
 #       3)initialise this script via calls to BASH_seqc_mama.sh or directly
-#  default host db structure: /DB/REPO_host/btau/bowtie2/btau*.bt2
+#  default host db structure: /DB/REPO_gref/host/btau/bowtie2/btau*.bt2
 #  some=('tool_k2_agora');BASH_seqc_makedb.sh -s $some
 #  All resources req free vol = 350576705537 (350GB) (20250130)
 #ToDo:
@@ -64,7 +64,7 @@ varr_db_size[$vn]=${v_vol_gb}
 #vn=1
 ((vn++))
 varr_db_name[$vn]='host_kd_hsapcontam'
-varr_db_path[$vn]=${varr_db_path[0]}'/REPO_host/hsap_contam/bowtie2'
+varr_db_path[$vn]=${varr_db_path[0]}'/REPO_gref/host/hsap_contam/bowtie2'
 # cert issue 20240316 - mkdir /DB/hsap/;wget --no-check-certificate http://huttenhower.sph.harvard.edu/kneadData_databases/Homo_sapiens_hg37_and_human_contamination_Bowtie2_v0.1.tar.gz -O /DB/hsap/hsap_hg37_bowtie.tar.gz
 #varr_db_gets[1]='micromamba run -n env_s1 kneaddata_database --download human_genome bowtie2 '${varr_db_path[1]}'/hg37_and_contam.tar.gz'
 varr_db_gets[$vn]='wget --no-check-certificate http://huttenhower.sph.harvard.edu/kneadData_databases/Homo_sapiens_hg37_and_human_contamination_Bowtie2_v0.1.tar.gz -O '${varr_db_path[$vn]}'/hsap_hg37_contam.tar.gz'
@@ -81,7 +81,7 @@ vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
 # host - ncbi-bt2 - btau - 3.7G ~ 30min w/ 6 threads
 ((vn++))
 varr_db_name[$vn]='host_kd_btau'
-varr_db_path[$vn]=${varr_db_path[0]}'/REPO_host/btau'
+varr_db_path[$vn]=${varr_db_path[0]}'/REPO_gref/host/btau'
 varr_db_gets[$vn]='datasets download genome accession GCF_002263795.3 --include genome --filename '${varr_db_path[$vn]}'/btau_ARS-UCD2.0.zip && unzip -qq '${varr_db_path[$vn]}'/btau_ARS-UCD2.0.zip -d '${varr_db_path[$vn]}' && micromamba run -n env_s1_kneaddata bowtie2-build --threads '${venv_cpu_max}' '${varr_db_path[$vn]}'/ncbi_dataset/data/GCF_002263795.3/GCF_002263795.3_ARS-UCD2.0_genomic.fna '${varr_db_path[$vn]}'/bowtie2/btau_ucd2'
 varr_db_size[$vn]=3.7
 vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
@@ -90,7 +90,7 @@ vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
 # host - bowtie2 - mmus 3.5G
 ((vn++))
 varr_db_name[$vn]='host_kd_mmus'
-varr_db_path[$vn]=${varr_db_path[0]}'/REPO_host/mmus/bowtie2'
+varr_db_path[$vn]=${varr_db_path[0]}'/REPO_gref/host/mmus/bowtie2'
 #varr_db_gets[3]='micromamba run -n env_s1 kneaddata_database --download mouse_C57BL bowtie2 '${varr_db_path[3]}'/C57BL.tar.gz'
 varr_db_gets[$vn]='wget --no-check-certificate http://huttenhower.sph.harvard.edu/kneadData_databases/mouse_C57BL_6NJ_Bowtie2_v0.1.tar.gz -O '${varr_db_path[$vn]}'/C57BL.tar.gz'
 varr_db_pack[$vn]=${varr_db_pack[0]}${varr_db_path[$vn]}'/C57BL.tar.gz'' --directory '${varr_db_path[$vn]}
@@ -243,31 +243,31 @@ else
         echo "FUNC_CHECK (makedb): Does the var_dir_db look right:->"$v_dir_db"<-"
         exit 0
     else
-        if [ ! -d $v_dir_db'/REPO_host' ];then
+        if [ ! -d $v_dir_db'/REPO_gref/host' ];then
             echo "FUNC_CHECK (makedb): The sub-directory for host data does not exist"
             v_log_repo_host=0
         else
-            if [ $( ls -1 $v_dir_db'/REPO_host' 2>/dev/null | wc -l ) -gt 0 ];then
+            if [ $( ls -1 $v_dir_db'/REPO_gref/host' 2>/dev/null | wc -l ) -gt 0 ];then
                 echo "FUNC_CHECK (makedb): The host repo is populated"
-                v_dir_repo_host=$( ls -1 $v_dir_db'/REPO_host')
+                v_dir_repo_host=$( ls -1 $v_dir_db'/REPO_gref/host')
                 varr_repo_host[0]=""
                 array_len=${#varr_repo_host[@]}
                 for i in $( echo $v_dir_repo_host );do
-                    vchk=$(du -s $v_dir_db'/REPO_host/'${i} | cut -f 1 )
+                    vchk=$(du -s $v_dir_db'/REPO_gref/host/'${i} | cut -f 1 )
                     if [ ${vchk} -gt 5 ];then 
                         echo "FUNC_CHECK (makedb): Size check on repo passed ("$i" @ "${vchk}")"
                         if [ $i = 'human' ]||[ $i = 'hsap' ];then
-                            var_DB_HOST_hsap=$v_dir_db'/REPO_host/'$i
+                            var_DB_HOST_hsap=$v_dir_db'/REPO_gref/host/'$i
                             varr_repo_host[array_len]='hsap'
                             array_len=${#varr_repo_host[@]}
                         fi
                         if [ $i = 'human' ]||[ $i = 'hsap_contam' ];then
-                            var_DB_HOST_hsapcontam=$v_dir_db'/REPO_host/'$i
+                            var_DB_HOST_hsapcontam=$v_dir_db'/REPO_gref/host/'$i
                             varr_repo_host[array_len]='hsap_contam'
                             array_len=${#varr_repo_host[@]}
                         fi
                         if [ $i = 'cow' ]||[ $i = 'btau' ];then
-                            var_DB_HOST_btau=$v_dir_db'/REPO_host/'$i
+                            var_DB_HOST_btau=$v_dir_db'/REPO_gref/host/'$i
                             varr_repo_host[array_len]='btau'
                             array_len=${#varr_repo_host[@]}
                         fi

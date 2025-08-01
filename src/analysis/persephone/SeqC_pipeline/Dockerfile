@@ -6,7 +6,7 @@
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for Persephone
-# last update - 2025.07.07
+# last update - 2025.08.01
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -22,7 +22,11 @@
 # |__ /seqc_proc
 # |  |__ /DEPO_demo
 # |  |__ /DEPO_proc
-# |  |__ /REPO_host
+# |  |__ /REPO_gref
+# |  |  |__ /t2p
+# |  |  |__ /ref_genome
+# |  |  |__ /host
+# |  |  |  |__ /hsap
 # |  |__ /REPO_tool
 # |-Dockerfile
 # |-BASH_seqc_*.sh
@@ -72,8 +76,8 @@ ARG v_dir_work=/home/${v_seqcusr}/${v_proj}
 ARG varg_dir_db="/DB"
 ARG varg_dir_work=${v_dir_work}
 ARG v_path0=${v_dir_work}/{final_reports,scrp_job,scrp_run,step0_data_in}/
-ARG v_path1=${v_dir_work}/${varg_dir_db}/REPO_host/{hsap,hsap_contam,mmus,btau}/bowtie2/
-ARG v_path2=${v_dir_work}/${varg_dir_db}/REPO_tool/{kraken/t2p,humann,checkm2,mmseqs2,ncbi_NR}/
+ARG v_path1=${v_dir_work}/${varg_dir_db}/REPO_gref/{t2p,ref_genome,host/{hsap,hsap_contam,mmus,btau}/bowtie2/}
+ARG v_path2=${v_dir_work}/${varg_dir_db}/REPO_tool/{kraken,ncbi_NR}/
 ARG v_path3=${v_dir_work}/${varg_dir_db}/DEPO_demo/{tmp,camisim/AGORA_smol/{genomes,run_params}}/
 ARG v_path4=${v_dir_work}/${varg_dir_db}/DEPO_proc/{logs,tmp}/
 # Set CORE environment variables
@@ -151,6 +155,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     emacs \
     gawk \
     git \
+    jq \
     less \
     lftp \
     libz-dev \
@@ -166,6 +171,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 #--------------------------------------------------------------------------------------------------#
 RUN curl -fsSL -o /bin/datasets https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets && \
     curl -fsSL -o /bin/dataformat https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat && \
+    curl -fsSL -o /bin/edirect https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh && \
     chmod +x /bin/datasets /bin/dataformat
 #--------------------------------------------------------------------------------------------------#
 # Clone required Git repositories

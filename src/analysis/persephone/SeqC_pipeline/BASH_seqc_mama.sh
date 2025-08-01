@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.27
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.07.07
+# last update - 2025.08.01
 # Modified code sources:
 #   https://stackoverflow.com/questions/2043453/executing-multi-line-statements-in-the-one-line-command-line
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -82,7 +82,7 @@ v_com_log="$@"
 #----------------------------------------------------------------------------------------
 # Directory check/config - ROUGH
 #----------------------------------------------------------------------------------------
-mkdir -p /DB/{DEPO_demo,DEPO_proc/{logs,tmp},REPO_host/{btau,hsap,hsap_contam,mmus}/bowtie2,REPO_tool/{checkm2,humann,kraken,mmseqs2,ncbi_NR}}/
+mkdir -p /DB/{DEPO_demo,DEPO_proc/{logs,tmp},REPO_gref/{t2p,ref_genome,host/{btau,hsap,hsap_contam,mmus}/bowtie2},REPO_tool/{kraken,ncbi_NR}}/
 #----------------------------------------------------------------------------------------
 # Logging check/config
 #----------------------------------------------------------------------------------------
@@ -1095,7 +1095,7 @@ func_demo () {
 		--remove-intermediate-output \
 		--input1 "${v_dir_cami_read}"/camisim_agora_smol_s"${v_i}"_1.fq.gz \
 		--input2 "${v_dir_cami_read}"/camisim_agora_smol_s"${v_i}"_2.fq.gz \
-		--output ${v_dir_db}/DEPO_demo/demo/step1_kneaddata --reference-db /DB/REPO_host/hsap_contam/bowtie2/ \
+		--output ${v_dir_db}/DEPO_demo/demo/step1_kneaddata --reference-db /DB/REPO_gref/host/hsap_contam/bowtie2/ \
 		--threads ${venv_cpu_max} --max-memory 200g --cat-final-output \
 		#--trimmomatic-options "ILLUMINACLIP:/data/adapters/TruSeq3-PE.fa:2:30:10: SLIDINGWINDOW:4:20 MINLEN:50" \
 		--trimmomatic /opt/conda/envs/env_s1_kneaddata/share/trimmomatic --reorder
@@ -1706,8 +1706,8 @@ if (( ${vopt_log} ));then
 			for idb in "${vopt_db[@]}";do
 				if [[ ${idb} = 'host_kd_hsapcontam' ]];then
 				#TODO perform check - sophisticate with check fun
-					vin_path_db[1]=${vin_path_db[0]}'/REPO_host/hsap_contam/bowtie2'
-					vin_host_rm='/DB/REPO_host/hsap_contam/bowtie2'
+					vin_path_db[1]=${vin_path_db[0]}'/REPO_gref/host/hsap_contam/bowtie2'
+					vin_host_rm='/DB/REPO_gref/host/hsap_contam/bowtie2'
 					if [[ $(ls -1 "${vin_path_db[1]}"/*.bt2 2>/dev/null | wc -l) -lt 6 ]];then
 						printf 'FUNC_CHECK: DB: %s not found, installing...\n' "${idb}" >> ${v_logfile}
 						BASH_seqc_makedb.sh -s 'host_kd_hsapcontam'
@@ -2547,14 +2547,14 @@ EOF
 		printf 'Welcome %s!\n' "${venv_seqcusr}"
 		# Create proc dirs as .gitkeep blocks action on fresh build - expand
 		printf 'Checking for expected folder structure...\n'
-		mkdir -p ${v_dir_db}/REPO_host/{hsap,hsap_contam,mmus,btau}/bowtie2/
-		mkdir -p ${v_dir_db}/REPO_tool/{kraken,humann,checkm2,mmseqs2,ncbi_NR}/
+		mkdir -p ${v_dir_db}/REPO_gref/{t2p,ref_genome,host/{hsap,hsap_contam,mmus,btau}/bowtie2/}
+		mkdir -p ${v_dir_db}/REPO_tool/{kraken,ncbi_NR}/
 		mkdir -p ${v_dir_db}/DEPO_demo/demo/{tmp,camisim/AGORA_smol/{genomes,run_params}}/
 		#tmp failing to create now?!?!
 		mkdir -p ${v_dir_db}/DEPO_proc/{logs,tmp}/ 2> /dev/null
 		# relocate taxa2proc files
-		mkdir -p ${v_dir_db}/REPO_tool/kraken/t2p
-		mv /tmp/taxa2proc_*_out.txt ${v_dir_db}/REPO_tool/kraken/t2p
+		mkdir -p ${v_dir_db}/REPO_gref/t2p
+		mv /tmp/taxa2proc_*.txt ${v_dir_db}/REPO_gref/t2p
 		# syslink of log dir
 		# currently impossible with docker: ln -s ${v_logfile%/*}/ ${venv_dir_proc}
 		# Display info
