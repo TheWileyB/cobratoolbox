@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -15,16 +15,12 @@
   
   
   
-    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
-  
   
     <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
   
   
     <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
   
-  
-    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
   
   
     <link rel="manifest" href="../../../../_static/json/manifest.json">
@@ -69,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Entropicfba" href="../entropicFBA/index.html"/>
-        <link rel="prev" title="Getsetsolver" href="../getSetSolver/index.html"/> 
+        <link rel="next" title="Cardopt" href="../cardOpt/index.html"/>
+        <link rel="prev" title="Cplex" href="../cplex/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +88,7 @@
           
 
           
-            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -126,14 +122,13 @@
 			    enabled: true
 		    }
 		},
-
-    	template: {
+	template: {
 	    	type: "custom",
 		    method: function(value, item) {
-                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+                return "<span><a href='../../../../_static/../" + item.website_url + "' >" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
 		    }
 	    },
-
+		
 		theme: "square"
 
 	};
@@ -153,35 +148,42 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
               </ul>
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using the Toolbox</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../optarrow/index.html">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -190,16 +192,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../submodules/index.html">Submodules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -240,20 +248,21 @@
 <span id="id1"></span><h1>Rescale<a class="headerlink" href="#rescale" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.solvers.rescale"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.rescale.liftCouplingConstraints">
-<span class="sig-name descname"><span class="pre">liftCouplingConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftCouplingConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftCouplingConstraints" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">liftCouplingConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">equalities</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftCouplingConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftCouplingConstraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reformulates badly-scaled coupling constraints C*v &lt;=&gt; d
 by lifting them to a better scaled problem in a higher dimension by
 introducing dummy variables.</p>
 <p>Assumes <cite>C</cite> does not contain very small entries and transforms constraints
 containing very large entries (entries larger than BIG).</p>
 <p>Reformulation techniques are described in detail in:
-<cite>Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
-Balance Analysis of Multi-scale Biochemical Networks, submitted</cite>.</p>
+Sun, Y., Fleming, R. M., Thiele, I., &amp; Saunders, M. A. (2013). Robust flux balance analysis of multiscale biochemical reaction networks. BMC Bioinformatics, 14(1). <a class="reference external" href="https://doi.org/10.1186/1471-2105-14-240">https://doi.org/10.1186/1471-2105-14-240</a>
+See also tutorial here:
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorial_numCharactWBM.html">https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorial_numCharactWBM.html</a></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[LPproblem] = reformulate</strong> (<em>model, BIG, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> –</p>
 <ul class="simple">
 <li><p>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
@@ -263,13 +272,16 @@ Balance Analysis of Multi-scale Biochemical Networks, submitted</cite>.</p>
 </ul>
 </dd>
 </dl>
-<dl class="simple">
+<dl>
 <dt>OPTIONAL INPUTS</dt><dd><p>‘BIG’                Value consided a large coefficient. BIG should be set between 1000 and 10000 on double precision machines.
 <cite>printLevel</cite>         1 or 0 enables/diables printing respectively.</p>
+<blockquote>
+<div><p>equalities          true means also deals with original constraints containing equalities (default false - only deals with original constraints that are inequalities)</p>
+</div></blockquote>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> –</p>
 <ul>
@@ -303,14 +315,14 @@ Converts it into a COBRA LPproblem structure, which can be used with
 solveCobraLP. Fluxes for the reactions should stay the same i.e.
 sol.full(1:nRxns) should yield an optimal flux vector.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>LPproblem = liftModel</strong> (<em>model, BIG, printLevel,fileName,directory</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA LPproblem Structure containing the original LP to be solved. The format of
 this struct is described in the documentation for <cite>solveCobraLP.m</cite></p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>BIG</strong> – A parameter the controls the largest entries that appear in the
 reformulated problem (default = 1000).</p></li>
@@ -320,8 +332,39 @@ printLevel = 0 silent</p></li>
 <li><p><strong>directory</strong> – file directory (if <cite>model</cite> is empty, you can load it using <cite>fileName</cite> and <cite>directory</cite>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>LPproblem</strong> – COBRA Structure contain the reformulated LP to be solved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.rescale.liftRows">
+<span class="sig-name descname"><span class="pre">liftRows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">C</span></em>, <em class="sig-param"><span class="pre">cupcon</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">logbig</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">ctrs_cuprow</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftRows.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper for liftCouplingConstraints. Implements the lifting</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>C           k x n double</strong> – Subset of coupling constraints (2-variable rows to be lifted)</p></li>
+<li><p><strong>cupcon      k x 1 char</strong> – Senses for rows in C (L/G/E)</p></li>
+<li><p><strong>BIG         double</strong> – Threshold for “large” coefficients. TRiggers lifting</p></li>
+<li><p><strong>logbig      double</strong> – log(BIG)</p></li>
+<li><p><strong>printLevel  double</strong> – 0 or 1. If 1 prints extra information</p></li>
+<li><p><strong>ctrs_cuprow k x 1 cell array of chr</strong> – IDs of the selected constraints. Correspnds to rows in C</p></li>
+<li><p><strong>rxns        nRxns x 1 cell array of chr</strong> – model rxn IDs</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Clifted     k’ x n’ double</strong> – Lifted constraint matrix</p></li>
+<li><p><strong>newcon      ndum x 1 char</strong> – Senses of added dummy constraints</p></li>
+<li><p><strong>ctrs_cuprow k’ x 1 cell array of char</strong> – Updated IDs for original coupling constraints.</p></li>
+<li><p><strong>ctrs_new    ndum x 1 cell array of char</strong> – IDs for dummy constraints</p></li>
+<li><p><strong>evars       nEvars x 1 cell array of char</strong> – IDs of new dummy variables</p></li>
+<li><p><strong>ndum        double</strong> – Total number of dummy constraints rows added</p></li>
+<li><p><strong>cupcon      k’ x 1 char</strong> – Senses for rows in Clifted (L/G/E)</p></li>
+<li><p><strong>nEvars      double</strong> – Total number of dummy variables</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -346,10 +389,10 @@ BIG). BIG should be set between 1000 and 10000 on double precision machines.
 <cite>Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
 Balance Analysis of Multi-scale Biochemical Networks, submitted</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[LPproblem] = reformulate</strong> (<em>LPproblem, BIG, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>LPproblem</strong> – Structure contain the original LP to be solved. The format of
 this struct is described in the documentation for <cite>solveCobraLP.m</cite></p></li>
@@ -359,8 +402,50 @@ reformulated problem.</p></li>
 0 = silent</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>LPproblem</strong> – Structure contain the reformulated LP to be solved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.rescale.splitRow">
+<span class="sig-name descname"><span class="pre">splitRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">ri</span></em>, <em class="sig-param"><span class="pre">evars</span></em>, <em class="sig-param"><span class="pre">evarlb</span></em>, <em class="sig-param"><span class="pre">evarub</span></em>, <em class="sig-param"><span class="pre">evarc</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">dsense</span></em>, <em class="sig-param"><span class="pre">ctrs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/splitRow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.splitRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes row ri of the constraint matrix A (e.g. -1e6*v1 -v2 + v3 &lt; 0),
+identifies the coefficient with largest absolute value, and replaces the row by:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>a constraint containing only that largest coefficient and a new variable z
+(e.g. -1e6*v1 + z &lt; 0)</p></li>
+<li><p>an equality constraint defining z as a combination of the remaining
+variables (e.g. z +v2 - v3 = 0)</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Inputs<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A        k x n constraint matrix.</strong></p></li>
+<li><p><strong>ri       Index of the row of A to split</strong></p></li>
+<li><p><strong>evars    Cell array of existing extra variable IDs</strong></p></li>
+<li><p><strong>evarlb   Lower bounds of extra variables</strong></p></li>
+<li><p><strong>evarub   Upper bounds of extra variables</strong></p></li>
+<li><p><strong>evarc    Objective coefficients of extra variables</strong></p></li>
+<li><p><strong>b        Right-hand side vector of constraints</strong></p></li>
+<li><p><strong>dsense   Constraint senses</strong> (<em>L,E,G</em>)</p></li>
+<li><p><strong>ctrs     Cell array of constraint IDs</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Outputs<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A        Updated constraint matrix with one extra column and one extra row.</strong></p></li>
+<li><p><strong>evars    Updated extra variable IDs including the new z variable</strong></p></li>
+<li><p><strong>evarlb   Updated lower bounds</strong> (<em>new z has -Inf</em>)</p></li>
+<li><p><strong>evarub   Updated upper bounds</strong> (<em>new z has Inf</em>)</p></li>
+<li><p><strong>evarc    Updated objective coefficients</strong> (<em>new z has 0</em>)</p></li>
+<li><p><strong>b        Updated RHS including 0 for the z-definition equality</strong></p></li>
+<li><p><strong>dsense   Updated senses including ‘E’ for the z-definition equality</strong></p></li>
+<li><p><strong>ctrs     Updated constraint IDs with a _splitN suffix for the new row</strong></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -377,10 +462,10 @@ reformulated problem.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../entropicFBA/index.html" class="btn btn-default float-right" title="Entropicfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cardOpt/index.html" class="btn btn-default float-right" title="Cardopt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../getSetSolver/index.html" class="btn btn-default" title="Getsetsolver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../cplex/index.html" class="btn btn-default" title="Cplex" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -389,7 +474,7 @@ reformulated problem.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2026, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -418,9 +503,6 @@ reformulated problem.</p></li>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
